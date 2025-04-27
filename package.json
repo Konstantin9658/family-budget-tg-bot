@@ -1,0 +1,17 @@
+{
+  "name": "telebot-vercel-template",
+  "author": "Konstantin Sokolovskiy",
+  "license": "MIT",
+  "scripts": {
+    "dev": "vc dev",
+    "dev-with-tunnel": "npm run tunnel & npm run dev",
+    "tunnel": "cloudflared tunnel --url http://localhost:3000"
+  },
+  "dependencies": {
+    "telebot": "^1.4.1",
+    "telebot-vercel": "^1.0.1"
+  },
+  "engines": {
+    "node": "^18.0.0"
+  }
+}
