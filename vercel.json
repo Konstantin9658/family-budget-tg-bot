@@ -5,10 +5,5 @@
       "src": "api/webhook.ts",
       "use": "@vercel/node"
     }
-  ],
-  "functions": {
-    "api/webhook.ts": {
-      "runtime": "nodejs16.x"
-    }
-  }
+  ]
 }
