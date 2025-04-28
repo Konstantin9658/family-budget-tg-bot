@@ -14,6 +14,8 @@ const userStates = new Map<number, string>();
 
 const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN as string);
 
+bot.telegram.setWebhook(process.env.WEBHOOK_URL);
+
 // === оборачиваем всё в функцию ===
 async function startBot() {
   // Инициализация базы данных
