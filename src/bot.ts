@@ -147,7 +147,7 @@ bot.action("reset", (ctx) => {
 });
 
 // Функция для отправки статистики в конце дня
-function sendDailyStatistics() {
+async function sendDailyStatistics() {
   const currentTime = new Date();
   const currentHour = currentTime.getHours();
   const currentMinute = currentTime.getMinutes();
@@ -155,9 +155,10 @@ function sendDailyStatistics() {
   if (currentHour === 21 && currentMinute === 59) {
     // Получаем всех пользователей
     const usersStmt = db.prepare("SELECT DISTINCT user_id FROM expenses");
-    const users = usersStmt.all() as { user_id: number }[];  // Явно указали тип возвращаемых данных
+    const users = usersStmt.all() as { user_id: number }[];
 
-    users.forEach((user) => {
+    // Асинхронная отправка статистики для каждого пользователя
+    for (const user of users) {
       const userId = user.user_id;
 
       // Получаем статистику для каждого пользователя
@@ -170,7 +171,7 @@ function sendDailyStatistics() {
       const stats = statsStmt.all(userId) as ExpenseStat[];
 
       if (stats.length === 0) {
-        return; // Нет статистики для этого пользователя
+        continue; // Нет статистики для этого пользователя
       }
 
       let message = "Ваши траты за сегодня:\n";
@@ -179,12 +180,18 @@ function sendDailyStatistics() {
       });
 
       // Отправляем сообщение пользователю
-      bot.telegram.sendMessage(userId, message);
-    });
+      try {
+        await bot.telegram.sendMessage(userId, message);
+      } catch (error) {
+        console.error(
+          `Ошибка при отправке сообщения пользователю ${userId}:`,
+          error
+        );
+      }
+    }
   }
 }
 
-// Настроим отправку статистики каждый день в 23:59
-setInterval(sendDailyStatistics, 60000); // Проверяем каждую минуту
+setInterval(sendDailyStatistics, 60000);
 
 export default bot;
