@@ -14,8 +14,6 @@ const userStates = new Map<number, string>();
 
 const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN as string);
 
-bot.telegram.setWebhook(process.env.WEBHOOK_URL);
-
 // === оборачиваем всё в функцию ===
 async function startBot() {
   // Инициализация базы данных
@@ -200,7 +198,12 @@ async function startBot() {
 
   setInterval(sendDailyStatistics, 60000);
 
-  bot.launch();
+  bot.launch({
+    webhook: {
+      domain: "https://family-budget-tg-bot.vercel.app",
+      path: "/api/telegram",
+    },
+  });
 }
 
 // Запускаем
