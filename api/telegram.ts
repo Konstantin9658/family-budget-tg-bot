@@ -1,5 +1,5 @@
 import { VercelRequest, VercelResponse } from "@vercel/node";
-import { bot } from "../src/bot";
+import bot from "../src/bot";
 
 const webhookCallback = bot.webhookCallback("/api/telegram");
 

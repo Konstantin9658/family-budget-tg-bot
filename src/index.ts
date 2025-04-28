@@ -1,4 +1,4 @@
-import { bot } from "./bot";
+import bot from "./bot";
 
 async function main() {
   console.log("Бот запущен локально 🚀");
