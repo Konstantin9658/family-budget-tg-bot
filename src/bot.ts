@@ -1,7 +1,7 @@
 import { Telegraf, Markup, Context } from "telegraf";
-import { openDb, initDb } from "./db";
 import dotenv from "dotenv";
 import { ExpenseStat } from "./types";
+import { initDb, openDb } from "./db";
 
 dotenv.config();
 
@@ -16,6 +16,7 @@ const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN as string);
 
 // === оборачиваем всё в функцию ===
 async function startBot() {
+  // Инициализация базы данных
   await initDb();
 
   bot.start((ctx: Context) => {
@@ -33,6 +34,7 @@ async function startBot() {
     );
   });
 
+  // Обработка выбора категории
   bot.action(CATEGORIES, (ctx) => {
     const category = ctx.match[0];
     const userId = ctx.from?.id;
@@ -47,6 +49,7 @@ async function startBot() {
     );
   });
 
+  // Обработка ввода суммы трат
   bot.on("text", async (ctx) => {
     const userId = ctx.from?.id;
     const text = ctx.message.text;
@@ -89,6 +92,7 @@ async function startBot() {
     );
   });
 
+  // Обработка кнопки "Показать статистику"
   bot.action("statistics", async (ctx) => {
     const userId = ctx.from?.id;
     if (!userId) return;
@@ -109,7 +113,7 @@ async function startBot() {
     }
 
     let message = "Ваши траты по категориям:\n";
-    stats.forEach((row) => {
+    stats.forEach((row: { category: string; total: number }) => {
       message += `${row.category}: ${row.total} руб.\n`;
     });
 
@@ -127,6 +131,7 @@ async function startBot() {
     );
   });
 
+  // Обработка кнопки "Сбросить статистику"
   bot.action("reset", async (ctx) => {
     const userId = ctx.from?.id;
     if (!userId) return;
@@ -148,6 +153,7 @@ async function startBot() {
     );
   });
 
+  // Функция для отправки статистики в конце дня
   async function sendDailyStatistics() {
     const currentTime = new Date();
     const currentHour = currentTime.getHours();
@@ -174,7 +180,7 @@ async function startBot() {
         if (stats.length === 0) continue;
 
         let message = "Ваши траты за сегодня:\n";
-        stats.forEach((row) => {
+        stats.forEach((row: { category: string; total: number }) => {
           message += `${row.category}: ${row.total} руб.\n`;
         });
 
