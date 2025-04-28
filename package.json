@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "ts-node src/index.ts",
     "build": "tsc",
-    "start": "node dist/index.ts",
+    "start": "node dist/index.js",
     "set-webhook": "ts-node api/setWebhook.ts"
   },
   "dependencies": {
