@@ -1,8 +1,8 @@
 {
-  "builds": [
-    {
-      "src": "dist/index.js",
-      "use": "@vercel/node"
+  "version": 2,
+  "functions": {
+    "api/webhook.ts": {
+      "runtime": "vercel-node@canary"
     }
-  ]
+  }
 }

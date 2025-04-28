@@ -1,12 +1,12 @@
-import bot from "./bot";
+// import bot from "./bot";
 
-async function main() {
-  console.log("Бот запущен локально 🚀");
-  await bot.launch().catch((e) => console.log(e));
-}
+// async function main() {
+//   console.log("Бот запущен локально 🚀");
+//   await bot.launch().catch((e) => console.log(e));
+// }
 
-main();
+// main();
 
-// Позволяет корректно остановить бота через CTRL+C
-process.once("SIGINT", () => bot.stop("SIGINT"));
-process.once("SIGTERM", () => bot.stop("SIGTERM"));
+// // Позволяет корректно остановить бота через CTRL+C
+// process.once("SIGINT", () => bot.stop("SIGINT"));
+// process.once("SIGTERM", () => bot.stop("SIGTERM"));
